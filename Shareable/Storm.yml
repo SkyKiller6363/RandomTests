@@ -1,0 +1,50 @@
+Nightmaretier1:
+  Type: ZOMBIE
+  Display: '&4☠&r &cNightmare Stalker &a<caster.hp{round=0}>&c❤ &4&l(&r&4<caster.var.timer>&4&l)'
+  Disguise: Enderman
+  Health: 100
+  Damage: 8
+  Equipment: []
+  AIGoalSelectors:
+  - meleeattack
+  - hurtbytarget
+  Options:
+    AlwaysShowName: true
+    Despawn: persistent
+    Scale: 1
+    MovementSpeed: 0.5
+    KnockbackResistance: 100
+  BossBar:
+    Enabled: false
+    Title: '&c&lTURNED OFF!'
+    Range: 50
+    Color: PURPLE
+    Style: SOLID
+    CreateFog: true
+    DarkenSky: true
+    PlayMusic: true
+    UseThreatTable: true
+  Skills:
+   - sound{s=entity.enderman.hurt;p=0.2;r=50} @self ~onDamaged
+   - sound{s=block.end_portal.spawn;p=0.3;r=100} @self ~onSpawn
+   - particlelinehelix{Fo=true;db=0.4;hl=4;syo=1;p=reddust;color=#191919;hr=0.5;md=40} @Target ~onTimer:200
+   - particlelinehelix{Fo=true;db=0.4;hl=4;syo=1;p=reddust;color=#191919;hr=0.5;md=40} @Target ~onTimer:150
+   - particlelinehelix{Fo=true;db=0.4;hl=4;syo=1;p=reddust;color=#191919;hr=0.5;md=40} @Target ~onTimer:100
+   - damage{d=7} @Target ~onTimer:200
+   - damage{d=7} @Target ~onTimer:150
+   - damage{d=7} @Target ~onTimer:100
+   - stopsound{s=entity.zombie.ambient} @PIR{r=10} ~onTimer:1
+   - setvariable{s=mythicplayer;v=<trigger.name>} @self ~onSpawn 
+   - delay 20
+   - fakelightning @self ~OnSpawn
+   - setname{n=<caster.name>;delay=2} @self ~onTimer:1
+   - command{c="ecoskills give <target.name> nightmaretrial 25"} @Target ~onDeath
+   - command{c="libreforge points set <target.name> intrial 0"} @Target ~onDeath
+   - command{c="libreforge points set <target.name> intrial 0"} @Target ~onPlayerKill
+   - remove @self ~onPlayerKill
+   - remove{delay=2400} @self ~onSpawn
+   - message{m="&cThe boss despawned because the timer ran out or you died!"} @Target ~onDespawn
+   - setvariable{var="owner";scope=global;value="<trigger.name>"} @self ~onSpawn
+   - skill{s=[
+      - setvariable{var=caster.timer;val="<caster.var.timer|120> - 1" }
+      ]} @self ~onTimer:20
